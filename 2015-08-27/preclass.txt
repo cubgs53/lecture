@@ -8,13 +8,20 @@
     you should use a script to produce this plot, with both the serial
     fraction and the maximum number of cores as parameters.
 
+    in lec1.py
+
 2.  Suppose a particular program can be partitioned into perfectly
     independent tasks, each of which takes time tau.  Tasks are
     set up, scheduled, and communicated to p workers at a (serial)
     central server; this takes an overhead time alpha per task.
     What is the theoretically achievable throughput (tasks/time)?
 
+    time to complete k  tasks: tau + k*(T/p+alpha)
+    k/(tau + k*(T/p+alpha)) as p -> infinity throughpout ~ 1/alpha
+
 3.  Under what circumstances is it best to not tune?
+
+    if its not worth the human-time to tune
 
 4.  The class cluster consists of eight nodes and fifteen Xeon Phi
     accelerator boards.  Based on an online search for information on
@@ -23,5 +30,20 @@
     you computed this, and give URLs for where you got the parameters
     in your calculation.  (We will return to this question again after
     we cover some computer architecture.)
-    
+
+    nodes: 2.4Ghz * 6 cores * 16 DP-flops/cycle * 8 nodes = 1843.2GFlop/s
+
+    boards: 1.053Ghz * 60 cores * 16 DP-flops/cycle * 15 boards = 15163.2GFlop/s
+
+    sources:
+        http://ark.intel.com/products/71992/Intel-Xeon-Phi-Coprocessor-5110P-8GB-1_053-GHz-60-core
+        http://ark.intel.com/products/83352/Intel-Xeon-Processor-E5-2620-v3-15M-Cache-2_40-GHz
+        http://stackoverflow.com/questions/6289745/how-to-compute-the-theoretical-peak-performance-of-cpu
+
 5.  What is the approximate theoretical peak flop rate for your own machine?
+
+    2.7Ghz * 2 cores * 16 DP-flops/cycle = 86.4GFlop/s
+
+    sources:
+        http://stackoverflow.com/questions/15655835/flops-per-cycle-for-sandy-bridge-and-haswell-sse2-avx-avx2
+        http://stackoverflow.com/questions/6289745/how-to-compute-the-theoretical-peak-performance-of-cpu
