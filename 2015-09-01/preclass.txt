@@ -14,15 +14,16 @@ with questions for class!
 
     Still the same because sources should be accounting for FVA, etc.
 
-    nodes: 2.4Ghz * 6 cores * 16 DP-flops/cycle * 8 nodes = 1843.2GFlop/s
+    nodes: 3.2Ghz * 2*6 cores * 16 DP-flops/cycle * 8 nodes = 4915.2GFlop/s
 
-    boards: 1.053Ghz * 60 cores * 16 DP-flops/cycle * 15 boards = 15163.2GFlop/s
+    boards: 1.053Ghz * 60 cores * 18 DP-flops/cycle * 15 boards = 17058.6GFlop/s
 
     sources:
         http://ark.intel.com/products/71992/Intel-Xeon-Phi-Coprocessor-5110P-8GB-1_053-GHz-60-core
         http://ark.intel.com/products/83352/Intel-Xeon-Processor-E5-2620-v3-15M-Cache-2_40-GHz
         http://stackoverflow.com/questions/6289745/how-to-compute-the-theoretical-peak-performance-of-cpu
         http://stackoverflow.com/questions/15655835/flops-per-cycle-for-sandy-bridge-and-haswell-sse2-avx-avx2
+        https://software.intel.com/en-us/articles/intel-xeon-phi-core-micro-architecture
     
 2.  What is the approximate theoretical peak flop rate for your own machine?
 
