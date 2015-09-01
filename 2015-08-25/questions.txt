@@ -21,3 +21,11 @@ Consider the following questions:
 2. What about a simple model to predict time for one person to count?
 3. How big should the class be before the parallel method takes less time?
 
+    Time to start = S
+    Time to compute single row = T
+    Time for instructor to gather counts = G
+    time for instructor to do arithmetic = A
+    number of rows = R
+1. S + T + G + A
+2. TR (no startup time...just need to count each row...also don't need to sum or gather counts)
+3. (TR) - (S+T+G+A) > 0
