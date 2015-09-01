@@ -73,6 +73,10 @@ with questions for class!
     timings-heat.pdf; what can you tell about the cache architecture
     on your machine from the plot?
 
+    As stride increases performance generally gets worse...this is likely because as step increases it eventually gets larger than a cache line and performance decreases.
+
+    As size of the the array increases less of the array fits in cache and may have to go into a higher level cache (L2, or L3...or worse) which is slower.
+
 6.  From the cloned repository, check out the totient branch:
 
        git checkout totient
@@ -81,6 +85,8 @@ with questions for class!
     If you prefer, you can also look at the files on GitHub.  Either
     way, repeat the exercise of problem 5.  What can you tell about
     the cache architecture of the totient nodes?
+
+    Caches have larger lines perhaps...worse performance is further to the right (larger step) than on my computer.
 
 7.  Implement the following three methods of computing the centroid
     of a million two-dimensional coordinates (double precision).
