@@ -39,12 +39,12 @@ with questions for class!
     with p stages.  What is the speedup over serial execution of the
     same tasks?
 
-    Time per stage = T
-    Instructions per task = n
-
-    serial execution: t*n*(p*T)
-    pipeline: p*T+(n*t-1)*T
-    speedup = tnpT/pT+n(t-1)T= tnp/(p+n(t-1))
+    serial: pt
+    pipeline:
+        fill pipeline: p
+        finish remaining tasks: t-1
+        p + t - 1
+    speedup: pt/(p+t-1)
 
 4.  Consider the following list of tasks (assume they can't be pipelined):
 
