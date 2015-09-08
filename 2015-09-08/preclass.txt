@@ -18,13 +18,23 @@ and cache), and depends on the cache size. Suppose the cache uses a
 least-recently-used (LRU) policy for deciding which data to flush when moving
 something into an already-full cache.
 
+ - Each double-precision floating point value is 8 bytes.
+ - Algorithm is 2N^3 flops
+
 1. Suppose 16N is significantly larger than the size of our L3 cache. What is
 the memory-based AI of this code? (Hint: What is the memory-based AI of just the
 innermost loop?)
 
+ - Can't store an entire row of each matrix in the cache (each row is 8N bytes).
+ - must read and write each entry of C (2*8*N^2)
+ - must read and write A/B entries all the time - access 2 doubles N^3 times
+ - 2N^3 / (2*8*N^2 + 2 * 2*8*N^3) <= 1/8
 
 2. Now suppose that the cache is substantially larger than 16N, but
 substantially smaller than 8N^2. What is the AI now?
+
+ - Can hold entire rows in the cache now, but not the entire matrix
+ -
 
 
 3. Now suppose the cache is large enough to hold all of A, B, and C. What is the
@@ -32,19 +42,34 @@ AI now? (Hint: Writing to a byte of memory not already in the cache incurs two
 memory transfers: one to move the data to the cache for writing, and one to move
 the written data back to main memory.)
 
+ - read in A and B, read in AND write to C
+ - 2*N^3 / (8*2N^2 + 2*8*N^2) = 2*N^3 / 32N^2 = N/16
+
 
 4. Cache overflowing. On my CPU (Intel i7-4700 HQ), L1, L2, and L3 caches are 32
 KB, 256 KB, and 6 MB respectively. What is the largest problem size N that will
 fit in each cache? What is the arithmetic intensity associated with each problem
 size?
 
+ - 8 bytes per entry in each matrix. 3 matrices. Each N^2 in size.
+ - L1 - 8*3N^2 = 32,000 -> N = 36
+ - L2 - 8*3N^2 = 256,000 -> N = 103
+ - L3 - 8*3N^2 = 6,000,000 -> N = 500
+ - L1 AI = 36/16
+ - L2 AI = 103/16
+ - L3 AI = 500 / 16
 
 5. My CPU has 4 cores, each of which can do 8 fused multiply-adds per cycle, has
-a clock rate of 2.4 GHz, and a memory bandwidth of 25.6 GB/s. At what arithmetic
+a clock rate of 2.4 GHz, a3nd a memory bandwidth of 25.6 GB/s. At what arithmetic
 intensity does my machine become CPU-bound?
 
+ - Peak flops = 4 * 8 * 2.4Ghz = 76.8GFlop/S
+ - memory bandwidth of doubles per second = 25.6 / 8 = 3.2, 2 memory operations per cache miss, 1.6GB/s
+ - AI intensity - 76.8/1.6 = 48 AI when machine becomes CPU bound
 
 6. So, for what size range for N will naive matmul be CPU-bound on my machine?
 
+ - 48 = N / 16, CPU-bound for all N less than 768 assuming everything fits in cache. Everything else memory bound?
 
 7. So, what will a plot of Flops/sec vs N look like?
+ - Always will be CPU bound
