@@ -3,12 +3,30 @@
    host cores are used, for the moment).  How do things change with
    the addition of the two Phi boards?
 
+   - 2 chips 6 cores
+   - max bandwidth is 42.6GB/s per chip, thus a total bandwidth of 85.2GB/s
+   - 12 cores gives us a peak flop rate of 12 * 3.2Ghz * 16 = 614.4 GFLop/s
+   - Thus the node becomes CPU-bound at 7.2 AI (Flops/byte)
+   - roofline diagram will be linearly (on a log-log scale) increasing until AI = 7.2 at which point it flattens out at the peak theoretical Flop/s of the node
+
+   - with two phi boards
+   - 2 boards have 60 cores each (1.053 ghz)
+   - 320GB/s max bandwidth
+   - Not sure how AI is affected by cores which are slower (per core), but have much higher memory bandwidth
+   - for a single phi board the AI is 1.053 * 18 * 60 = 1137.24 GFlop/s
+   - each board becomes memory bound much earlier: 3.55 Flops/byte
+   - Thus roofline graph will not be linear on a log-log scale while <= 3.55 Flops/byte. It will increase faster than linearly until 3.55 is reached, then because the phi GFlop/s flattens it no longer will affect the velocity of the graph.
+
 2. What is the difference between two cores and one core with
    hyperthreading?
+
+  - hyperthreading creates 2 virtual cores on a single physical core. These cores can then be scheduled independently but both are scheduled onto the single core to make it more efficient. hyperthreads use the same functional unit, but have two sets of data, one for each thread so the functional unit can be used more efficiently. Two cores are two separate hardware cores.
 
 3. Do a Google search to find a picture of how memories are arranged
    on the Phi architecture.  Describe the setup briefly in your own
    words.  Is the memory access uniform or non-uniform?
+
+   - interconnect connects each Core's L2 cache and main memory. Main memory is distributed in multiple places along interconnect. Main memory is all shared, but not equi-distant on interconnect so I think this means the Phi's are Non-Uniform Memory Access (NUMA), but the difference between cores is probably minimal.
 
 4. Consider the parallel dot product implementations suggested in the
    slides.  As a function of the number of processors, the size of the
@@ -17,3 +35,10 @@
    [Note that dot products have low arithmetic intensity -- the
     roofline model may be useful for reasoning about the peak
     performance for computing pieces of the dot product]
+
+  - vector length - n
+  - # processors - p
+  - communication time - T
+  - serial time: 2n flops
+  - parallel time: (2n / p) + pT
+  - speedup: 2n / ((2n /p ) + pT)
