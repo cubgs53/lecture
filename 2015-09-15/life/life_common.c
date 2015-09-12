@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <omp.h>
 
 #include "crc32.h"
 #include "life_common.h"
@@ -118,6 +119,8 @@ int main(int argc, char** argv)
 {
     problem_t problem;
     read_options(argc, argv, &problem);
+
+    tstart = omp_get_wtime();
     if (problem.verbose) {
         for (int i = 0; i < problem.g; ++i) {
             printf("\nGeneration %d\n", i);
@@ -126,6 +129,8 @@ int main(int argc, char** argv)
         }
     } else
         advance_board(&problem, problem.g);
+    tstop = omp_get_wtime ();
+    prtinf('%e\n', (tstop-tstart));
     printf("Final checksum: %08X\n", board_checksum(&problem));
     destroy_board(&problem);
     return 0;

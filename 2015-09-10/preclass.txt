@@ -4,14 +4,16 @@
    the addition of the two Phi boards?
 
    - 2 chips 6 cores
-   - max bandwidth is 42.6GB/s per chip, thus a total bandwidth of 85.2GB/s
-   - 12 cores gives us a peak flop rate of 12 * 3.2Ghz * 16 = 614.4 GFLop/s
-   - Thus the node becomes CPU-bound at 7.2 AI (Flops/byte)
+   - max bandwidth is 59GB/s per chip
+   - 59GB/s / 8 = 7.375GDouble/s
+   - 6 cores gives us a peak flop rate of 6 * 3.2Ghz * 16 = 307.2 GFLop/s
+   - 1 core flop rate - 51.2 GFlop/s
+   - Thus the node becomes CPU-bound at 5.3 AI (Flops/byte)
    - roofline diagram will be linearly (on a log-log scale) increasing until AI = 7.2 at which point it flattens out at the peak theoretical Flop/s of the node
 
    - with two phi boards
    - 2 boards have 60 cores each (1.053 ghz)
-   - 320GB/s max bandwidth
+   - 320GB/s max bandwidth\
    - Not sure how AI is affected by cores which are slower (per core), but have much higher memory bandwidth
    - for a single phi board the AI is 1.053 * 18 * 60 = 1137.24 GFlop/s
    - each board becomes memory bound much earlier: 3.55 Flops/byte
@@ -38,7 +40,7 @@
 
   - vector length - n
   - # processors - p
-  - communication time - T
+  - communication time - \alpha + \beta*8 (sending single doubles)
   - serial time: 2n flops
-  - parallel time: (2n / p) + pT
-  - speedup: 2n / ((2n /p ) + pT)
+  - parallel time: (2n / p) + p(\alpha+\beta*8)
+  - speedup: 2n / ((2n /p ) + p(\alpha+\beta*8))
