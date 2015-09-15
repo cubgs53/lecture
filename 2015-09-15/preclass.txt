@@ -21,9 +21,9 @@ the glider pattern for a few generations.
     board that does not fit?
 
     - Each entry in the board is 1 byte.
-    - L3 cache on each chip is 15MB, 2 chips per node - 30MB
-    - N^2 = 30,000,000 - N ~ 5477
-    - Half size if we consider the storage of current step and previous step
+    - L3 cache on each chip is 15MB
+    - N^2 = 15,000,000 - N ~ 3872
+    - Half size cache if we consider the storage of current step and previous step (2738)
     - Tried running this on totient but submitted jobs said they couldn't find omp :(, running the long ago centroid code has the same problems...but it runs on the head node
 
 3.  Assuming that we want to advance time by several generations,
