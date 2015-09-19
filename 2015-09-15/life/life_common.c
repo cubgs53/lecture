@@ -124,7 +124,7 @@ int main(int argc, char** argv)
     problem_t problem;
     read_options(argc, argv, &problem);
 
-    tstart = omp_get_wtime();
+    double tstart = omp_get_wtime();
     if (problem.verbose) {
         for (int i = 0; i < problem.g; ++i) {
             printf("\nGeneration %d\n", i);

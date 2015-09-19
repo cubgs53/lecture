@@ -24,7 +24,7 @@ the glider pattern for a few generations.
     - L3 cache on each chip is 15MB
     - N^2 = 15,000,000 - N ~ 3872
     - Half size cache if we consider the storage of current step and previous step (2738)
-    - Tried running this on totient but submitted jobs said they couldn't find omp :(, running the long ago centroid code has the same problems...but it runs on the head node
+    - Running with icc - ~312.5MCells/sec for both (compute bound)
 
 3.  Assuming that we want to advance time by several generations,
     suggest a blocking strategy that would improve the operational

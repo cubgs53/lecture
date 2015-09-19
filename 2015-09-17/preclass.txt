@@ -6,8 +6,12 @@ that you can figure out the numerical jargon.
 
 0.  How much time did you spend on this pre-class exercise, and when?
 
+    - About ~1.5 hours Tuesday night.
+
 1.  What are one or two points that you found least clear in the
     9/17 slide decks (including the narration)?
+
+    In these lectures we talked a lot about PDEs/ODEs/etc. I haven't taken differential equations or numerical analysis classes so don't know much about these topics. I followed the general descriptions of problems, but I guess the mathy stuff was harder for me to follow.
 
 2.  Fill in the most straightforward implementation you can think of
     for multiplying a compressed sparse row matrix by a vector.
@@ -24,7 +28,11 @@ that you can figure out the numerical jargon.
     
       void sparse_multiply(csr_t* A, double* x, double* result)
       {
-          /* Fill in here */
+          for (int r = 0; r < A->n; ++r) {
+              for (int c = A->ptr[r]; c < A->ptr[r+1]; ++c) {
+                  result[r] += A->pr[c] * x[A->col[c]];
+              }
+          }
       } 
 
 3.  From the slides, complete the following short code:
@@ -32,7 +40,7 @@ that you can figure out the numerical jargon.
       double laplacian_u(double (*u)(double x, double y),
                          double h, double x, double y)
       {
-          /* Estimate the Laplacian applied to u at (x,y) */
+          return (4*u(x,y) - u(x,y+h) - u(x+h,y) - u(x-h,y) - u(x,y-h)) / (h*h);
       }
 
     If you are unfamiliar with the syntax, the first argument to
@@ -61,3 +69,5 @@ that you can figure out the numerical jargon.
     several steps without communicating, can you describe how to
     similarly advance this scheme?  Are there any advantages to such
     an organization if there is only one core available?
+
+    - I think what's happening is we have a dependence at each timestep on the nodes to the left, center and right at the current step as well as the same node at the previous timestep. This scheme could be similarly advanced by keeping track of ghost cells at each level, but there is the added complication of depending on the same node as the current step and previous step ALONG with the left and right nodes at the current step (which is what heat eqn depended upon). This means more ghost cells have to be kept track of and there is less local interior values that can be calculated before needing to wait for boundary data. I don't think there advantages if there is one core as now one has to worry about all the extra overhead of keeping track of ghost cells and you are still stuck on one core.
