@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <omp.h>
 
+#ifdef WITH_TIMING
+#include <omp.h>
+#endif
+
 #include "crc32.h"
 #include "life_common.h"
 
@@ -127,10 +131,17 @@ int main(int argc, char** argv)
             print_board(&problem);
             advance_board(&problem, 1);
         }
-    } else
+    } else {
+#ifdef WITH_TIMING
+        double t0 = omp_get_wtime();
         advance_board(&problem, problem.g);
-    tstop = omp_get_wtime ();
-    prtinf('%e\n', (tstop-tstart));
+        double t1 = omp_get_wtime();
+        printf("Cells / sec: %e\n",
+               problem.g * problem.nboard * problem.nboard / (t1-t0));
+#else
+        advance_board(&problem, problem.g);
+#endif
+    }
     printf("Final checksum: %08X\n", board_checksum(&problem));
     destroy_board(&problem);
     return 0;
