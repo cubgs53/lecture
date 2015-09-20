@@ -1,7 +1,12 @@
 0.  How much time did you spend on this pre-class exercise, and when?
-
+    ~1.5 hours on Saturday.
 1.  What are one or two points that you found least clear in the
     9/22 slide decks (including the narration)?
+
+
+    It was all pretty straightforward and I learned a lot of the theory stuff in operating systems. Does the fork/join model for pthreads map to the fork/join model for forking processes?
+
+    However, I'm not sure how we model the expected blockage time on critical sections. This wasn't discussed in the slides but is asked in the following pre-class question and it confused me. If we're lucky critical sections will be entirely parallel and won't block on one another, if we're unlucky they will block on one another every time and have to be done completely serially. Of course we should be able to use expectation to determine that but I'm not sure how we would do this.
 
 2.  The pthread_mc.c file in the demo subdirectory runs a Monte Carlo
     simulation to estimate the expected value of a uniform random
@@ -13,16 +18,29 @@
        time per trial (t_trial), and time to update the global
        counters in the critical section (t_update).
 
+       N/p is the number of trials each processor must do. In actuality they will each also do one extra batch so approximately (N/p + b) trials per processor. Further each one will do (N/pb + 1) passes through the critical section.
+       Thus total time is: t_trial(N/p+b) + t_update*(N/pb+1) assuming no blocking occurs in critical section.
+
+       In reality each process will spend t_update/(t_trial*b) portion of their time in the critical section which means approximately t_update/(t_trial*b) percent of the time when running in the critical section the thread will be waiting
+
+       t_trial(N/p+b) + t_update*(N/pb+1) + t_update*(N/pb+1) * t_update/(t_trial*b)
+
     b) Run the code with a few different parameter values in order
        to estimate N, t_trial, and t_update for this code on
        a totient compute node.
+
+       Tried this but I was having issues getting reasonable numbers and wasn't sure what my model should be so I was getting negatives.
 
     c) Based on your model, suggest a strategy for choosing the batch
        size.  How might you generalize this strategy to automatically
        choose batch sizes for different types of computational
        experiments?
+
+       Each thread will do one extra batch worth of work beyond what it should have done. That means if the trial time is very long, i.e. computationally difficult, synchronizing is less of a problem as threads will spend a smaller portion of their time blocked on synchronization. On the other hand if computationally difficulty is low and thus threads spend most of their time in synchronization than they will be blocked more frequently by on that task. Thus as computational difficulty of the task increases then batch size should decrease so less work is done (not much overhead because portion of the time in synchronization is small). Vice versa for computationally difficulty decreasing - its worth doing more work if it means spending less time waiting around for other threads to finish synchronizing.
     
 3.  In the workq subdirectory of this directory, there is a basic work
     queue implementation.  Following the strategy outlined in the
     slides, add synchronization calls in the locations marked TODO.
     You should run the code to make sure it behaves as expected!
+
+    Done!

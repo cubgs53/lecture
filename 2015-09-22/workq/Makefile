@@ -7,7 +7,7 @@ workq: workq.o
 	$(CC) -o $@ $^ -lpthread -lm
 
 %.o: %.c
-	$(CC) -c -O3 $<
+	$(CC) -c -O3 -std=c99 $<
 
 clean:
 	rm -f *.o workq
