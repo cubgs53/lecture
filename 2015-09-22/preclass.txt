@@ -29,7 +29,12 @@
        to estimate N, t_trial, and t_update for this code on
        a totient compute node.
 
-       Tried this but I was having issues getting reasonable numbers and wasn't sure what my model should be so I was getting negatives.
+       Tried this but I was having issues getting reasonable numbers and wasn't sure what my model should be.
+
+       Here is what I got:
+       t_trial ~ 1.035e-13 seconds
+       t_update ~ 6.378e-8 seconds
+
 
     c) Based on your model, suggest a strategy for choosing the batch
        size.  How might you generalize this strategy to automatically
