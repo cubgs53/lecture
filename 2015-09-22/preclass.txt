@@ -14,9 +14,10 @@
     while "-b" sets the number of trials between synchronizations.
 
     a) Write a model for the run time for this simulation code in
-       terms of the number of trials (N), number of processors (p),
-       time per trial (t_trial), and time to update the global
-       counters in the critical section (t_update).
+       terms of the number of trials (N), batch size (B),
+       number of processors (p), time per trial (t_trial), 
+       and time to update the global counters in the critical 
+       section (t_update).
 
        N/p is the number of trials each processor must do. In actuality they will each also do one extra batch so approximately (N/p + b) trials per processor. Further each one will do (N/pb + 1) passes through the critical section.
        Thus total time is: t_trial(N/p+b) + t_update*(N/pb+1) assuming no blocking occurs in critical section.
