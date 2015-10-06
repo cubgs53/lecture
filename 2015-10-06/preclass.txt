@@ -1,7 +1,11 @@
 0.  How much time did you spend on this pre-class exercise, and when?
 
+    1 hour. Monday evening.
+
 1.  What are one or two points that you found least clear in the
     10/06 slide decks (including the narration)?
+
+    I'm not sure I completely understand contexts. Does each library get its own context? how are contexts assigned to different functions/code blocks/etc.?
 
 2.  In the upcoming lecture (10/8), we will discuss how to model
     latency and bandwidth of MPI sends and receives using the
@@ -21,7 +25,16 @@
        you will have to add a module load to the start of the PBS
        scripts).  How do the timings differ from the Intel MPI timings?
 
+       Due to issues with the cluster (people's 2node jobs locking down the cluster and timing out) I only managed to get 2chip and 2core to run for intel mpi. I added the timings to this preclass folder. For a single message we get
+       2chip: 8.03374e-07
+       2core: 3.00245e-07
+
     c) When running at the peak rate (e.g. 16 double precision
        flops/cycle), how many (double precision) floating point ops
        could two totient cores do in the minimal time required for one
        MPI message exchange?
+
+       the peak rate of two cores is: 2*16*3.2GHz = 102.4GFlop/s
+       minimal time for an MPI message exchange on a Xeon E5 2620 v3 is: 3.00245e-07
+       102.4GFlops/s=x/3.00245e-07s. x~30,745 double precision flops in the time to send one MPI message exchange.
+
