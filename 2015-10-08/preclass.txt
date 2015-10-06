@@ -1,7 +1,13 @@
 0.  How much time did you spend on this pre-class exercise, and when?
 
+    1.5 hours on Tuesday.
+
 1.  What are one or two points that you found least clear in the
     10/08 slide decks (including the narration)?
+
+    Why is cross node communication so inconsistent? Could it be because of cluster issues? Why are 6001 and 7001 so much faster than others around them? Is cross node communication normally this inconsistent just due to the nature of communicating between two boxes? It doesn't seem to be related to the MTU of an ethernet packet which is ~1500 bytes. The jumps don't seem to correspond with the number of packets that need to be sent. I know we talked about this in class on 10/06 but it didn't seem to get resolved.
+
+    For non-blocking send/recv (ISend/IRecv/Wait/Test) do you call the two initiates and then call wait after your computation...how does test come into it? Is test + wait kind of like a condition variable in synchronization?
 
 2.  Now that we are now basically a third of the way into the
     semester, and are (mostly) settled into the steady pace of things,
@@ -10,6 +16,14 @@
     particularly useful -- venting about the cluster, for example, is
     understandable but doesn't help me that much in adjusting!
 
+    Hard to follow whats happening in lecture sometimes.
+    Even after watching the pre-class lectures the in class lectures seem to go
+    on tangents which makes it hard to understand the overall goal of each
+    lecture and follow along.
+
+    The preclass questions are good, though having more theoretical ones
+    would be good due to the cluster issues.
+
 3.  The ring demo implements the protocol described in the particle
     systems slide deck from 9/15:
 
@@ -17,9 +31,18 @@
 
     a) In your own words, describe what ring.c is doing.
 
+      sends data in a ring fashion. Data from processor 1 is sent to processor 2, 2 to 3...N to 1. This is done N times, after data is received it is sent on to the next processor.
+
+      When data is received the absolute value of the difference between my data (my being the processor's data) and the received data is calculated. Data is a length 2 array. We calculate abs(my[0] - received[0]) and abs(my[0] - received[1]), these are added to result[0] so the interaction of my[0] versus the received data is put in result[0]. The same is done for my[1] and result[1].
+
+      This is done in a ring fashion, as mentioned previously until all data has been sent around the ring and all interactions between each processor's data has been calculated for each processor.
+
     b) How might you modify the code to have the same computational
        pattern, but using non-blocking communication rather than
        MPI_Sendrecv?  Note that according to the MPI standard,
        one isn't supposed to read from a buffer that is being
        handled by a non-blocking send, so it is probably necessary
        to use three temporary buffers rather than the current two.
+
+      We could receive data, copy it into a temporary buffer, immediately send it on and then compute the interactions. We then wait until we receive new data and then do the same thing again (copy into temporary buffer, send it on, compute interactions). That way we only wait when another processor has yet to send us data.
+      Essentially do this in the style of slide 11 of MPI Take 2.
